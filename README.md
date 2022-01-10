@@ -10,6 +10,12 @@ npm install
 npm run start
 ```
 
+### Watch ts files
+
+```
+npm run watch
+```
+
 ### Run build server
 
 ```
