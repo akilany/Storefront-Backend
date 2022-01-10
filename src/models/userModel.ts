@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt'
-import AppError from '../utils/appError'
 import Client from '../database'
 
 const { PASSWORD_SECRET, SALT_ROUNDS } = process.env
@@ -21,7 +20,7 @@ export class UserStore {
     return results.rows
   }
 
-  async show(id: string | number): Promise<User[]> {
+  async show(id: string | number): Promise<User> {
     const connection = await Client.connect()
     const sql = 'SELECT * FROM users WHERE id=($1)'
     const results = await connection.query(sql, [id])

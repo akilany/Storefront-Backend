@@ -8,15 +8,13 @@ router.post('/login', authController.login)
 router.post('/signup', authController.signup)
 router.patch('/:id/change-password', userController.changePassword)
 
-router
-  .route('/')
-  .get(authController.protect, userController.getAll)
-  .post(authController.protect, userController.createOne)
+router.use(authController.protect)
+router.route('/').get(userController.getAll).post(userController.createOne)
 
 router
   .route('/:id')
-  .get(authController.protect, userController.getOne)
-  .patch(authController.protect, userController.updateOne)
-  .delete(authController.protect, userController.deleteOne)
+  .get(userController.getOne)
+  .patch(userController.updateOne)
+  .delete(userController.deleteOne)
 
 export default router

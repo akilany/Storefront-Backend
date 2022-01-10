@@ -42,7 +42,7 @@ const createSendToken = (
 }
 
 const protect = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     let token
     // 1) Getting token and check if it's true
     if (
@@ -96,7 +96,7 @@ const signup = catchAsync(
 
     const user = await store.create({ name, email, password })
 
-    createSendToken(user, 200, req, res)
+    createSendToken(user, 201, req, res)
   }
 )
 

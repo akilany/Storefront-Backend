@@ -1,8 +1,8 @@
-import { UserStore } from '../../models/userModel'
+import { ProductStore } from '../../models/productModel'
 
-const store = new UserStore()
+const store = new ProductStore()
 
-describe('User Model', () => {
+describe('Product Model', () => {
   it('should have an index method', () => {
     expect(store.index).toBeDefined()
   })
@@ -19,22 +19,23 @@ describe('User Model', () => {
     expect(store.delete).toBeDefined()
   })
 
-  it('index method should return a list of users', async () => {
+  it('index method should return a list of products', async () => {
     const result = await store.index()
     expect(result).toEqual([])
   })
 
-  it('create method should add a user', async () => {
+  it('create method should add a product', async () => {
     const result = await store.create({
-      name: 'test user',
-      email: 'test@ex.com',
-      password: '123456',
+      name: 'test product',
+      price: 499,
+      category: 'test',
     })
     expect(result).toEqual({
       id: 1,
-      name: 'test user',
-      email: 'test@ex.com',
-      password: result.password,
+      name: 'test product',
+      //@ts-ignore
+      price: '499',
+      category: 'test',
     })
   })
 
@@ -51,17 +52,18 @@ describe('User Model', () => {
   //     })
   //   })
 
-  it('show method should return the correct user', async () => {
+  it('show method should return the correct product', async () => {
     const result = await store.show(1)
     expect(result).toEqual({
       id: 1,
-      name: 'test user',
-      email: 'test@ex.com',
-      password: result.password,
+      name: 'test product',
+      //@ts-ignore
+      price: '499',
+      category: 'test',
     })
   })
 
-  it('delete method should remove the user', async () => {
+  it('delete method should remove the product', async () => {
     await store.delete(1)
     const result = await store.index()
 

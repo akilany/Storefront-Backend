@@ -126,7 +126,7 @@ var signup = (0, catchAsync_1["default"])(function (req, res, next) { return __a
                 return [4 /*yield*/, store.create({ name: name, email: email, password: password })];
             case 1:
                 user = _b.sent();
-                createSendToken(user, 200, req, res);
+                createSendToken(user, 201, req, res);
                 return [2 /*return*/];
         }
     });

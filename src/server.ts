@@ -3,11 +3,11 @@ import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import morgan from 'morgan'
-
-import userRouter from './routes/userRouter'
-
 import errorController from './controllers/errorController'
 import AppError from './utils/appError'
+
+import userRouter from './routes/userRouter'
+import productRouter from './routes/productRouter'
 
 dotenv.config()
 
@@ -20,6 +20,7 @@ app.use(morgan('dev'))
 
 // Routes
 app.use('/api/users', userRouter)
+app.use('/api/products', productRouter)
 
 app.get('/', (req: express.Request, res: express.Response) => {
   res.send('Storefront Backend API')
@@ -33,5 +34,7 @@ app.all('*', (req, res, next) => {
 app.use(errorController)
 
 app.listen(PORT, () => {
-  console.log(`App listinging on port ${PORT}`)
+  console.log(`Server is listning on port: http://localhost:${PORT}`)
 })
+
+export default app
