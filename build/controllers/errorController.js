@@ -12,6 +12,10 @@ var handleUniqueFieldsDB = function (err) {
     var message = "Unique field value: ".concat(err.detail, ". Please use another value!");
     return new appError_1["default"](message, 400);
 };
+var handleInvalidReferencesDB = function (err) {
+    var message = "Invalid key: ".concat(err.detail, ". Please use another key!");
+    return new appError_1["default"](message, 400);
+};
 var handleJWTError = function () {
     return new appError_1["default"]('Invalid token. Please log in again!', 401);
 };
@@ -35,6 +39,8 @@ exports["default"] = (function (err, req, res, next) {
             error = handleUniqueFieldsDB(error);
         if (error.code === '23502')
             error = handleInvalidFieldsDB(error);
+        if (error.code === '23503')
+            error = handleInvalidReferencesDB(error);
         if (error.name === 'JsonWebTokenError')
             error = handleJWTError();
         if (error.name === 'TokenExpiredError')

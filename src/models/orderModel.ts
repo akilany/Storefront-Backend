@@ -1,0 +1,61 @@
+import Client from '../database'
+
+export type Order = {
+  id?: string | number
+  status: string
+  user_id: number | string
+}
+
+export class OrderStore {
+  async index(): Promise<Order[]> {
+    const connection = await Client.connect()
+    const sql = 'SELECT * FROM orders'
+    const results = await connection.query(sql)
+    connection.release()
+    return results.rows
+  }
+
+  async show(id: string | number): Promise<Order> {
+    const connection = await Client.connect()
+    const sql = 'SELECT * FROM orders WHERE id=($1)'
+    const results = await connection.query(sql, [id])
+    connection.release()
+    return results.rows[0]
+  }
+
+  async create(order: Order): Promise<Order> {
+    const connection = await Client.connect()
+    const sql =
+      'INSERT INTO orders (status, user_id) VALUES ($1, $2) RETURNING *'
+    const result = await connection.query(sql, [order.status, order.user_id])
+
+    connection.release()
+    return result.rows[0]
+  }
+
+  async delete(id: number | string): Promise<Order> {
+    const connection = await Client.connect()
+    const sql = 'DELETE FROM orders WHERE id=($1) RETURNING *'
+    const result = await connection.query(sql, [id])
+
+    connection.release()
+    return result.rows[0]
+  }
+
+  async orderProducts(id: number | string) {
+    const connection = await Client.connect()
+    const sql = 'SELECT * FROM order_products WHERE order_id=($1)'
+    const result = await connection.query(sql, [id])
+    connection.release()
+    return result.rows
+  }
+
+  async addProduct(orderId: string, quantity: number, productId: string) {
+    const connection = await Client.connect()
+    const sql =
+      'INSERT INTO order_products (quantity, order_id, product_id) VALUES ($1, $2, $3) RETURNING *'
+    const result = await connection.query(sql, [quantity, orderId, productId])
+    connection.release()
+    return result.rows[0]
+  }
+}

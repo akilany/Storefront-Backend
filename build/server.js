@@ -12,6 +12,7 @@ var errorController_1 = __importDefault(require("./controllers/errorController")
 var appError_1 = __importDefault(require("./utils/appError"));
 var userRouter_1 = __importDefault(require("./routes/userRouter"));
 var productRouter_1 = __importDefault(require("./routes/productRouter"));
+var orderRouter_1 = __importDefault(require("./routes/orderRouter"));
 dotenv_1["default"].config();
 var app = (0, express_1["default"])();
 var PORT = process.env.PORT;
@@ -21,6 +22,7 @@ app.use((0, morgan_1["default"])('dev'));
 // Routes
 app.use('/api/users', userRouter_1["default"]);
 app.use('/api/products', productRouter_1["default"]);
+app.use('/api/orders', orderRouter_1["default"]);
 app.get('/', function (req, res) {
     res.send('Storefront Backend API');
 });

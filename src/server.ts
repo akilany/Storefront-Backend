@@ -8,6 +8,7 @@ import AppError from './utils/appError'
 
 import userRouter from './routes/userRouter'
 import productRouter from './routes/productRouter'
+import orderRouter from './routes/orderRouter'
 
 dotenv.config()
 
@@ -21,6 +22,7 @@ app.use(morgan('dev'))
 // Routes
 app.use('/api/users', userRouter)
 app.use('/api/products', productRouter)
+app.use('/api/orders', orderRouter)
 
 app.get('/', (req: express.Request, res: express.Response) => {
   res.send('Storefront Backend API')

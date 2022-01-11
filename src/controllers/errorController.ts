@@ -12,6 +12,11 @@ const handleUniqueFieldsDB = (err) => {
   return new AppError(message, 400)
 }
 
+const handleInvalidReferencesDB = (err) => {
+  const message = `Invalid key: ${err.detail}. Please use another key!`
+  return new AppError(message, 400)
+}
+
 const handleJWTError = () =>
   new AppError('Invalid token. Please log in again!', 401)
 
@@ -35,6 +40,7 @@ export default (err, req: Request, res: Response, next: NextFunction) => {
     let error = err
     if (error.code === '23505') error = handleUniqueFieldsDB(error)
     if (error.code === '23502') error = handleInvalidFieldsDB(error)
+    if (error.code === '23503') error = handleInvalidReferencesDB(error)
     if (error.name === 'JsonWebTokenError') error = handleJWTError()
     if (error.name === 'TokenExpiredError') error = handleJWTExpiredError()
     sendError(error, req, res)
