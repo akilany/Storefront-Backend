@@ -94,11 +94,13 @@ var addProduct = (0, catchAsync_1["default"])(function (req, res, next) { return
 var getAll = handlerController_1["default"].index(store);
 var getOne = handlerController_1["default"].show(store);
 var createOne = handlerController_1["default"].createOne(store);
+var updateOne = handlerController_1["default"].updateOne(store);
 var deleteOne = handlerController_1["default"].deleteOne(store);
 exports["default"] = {
     getAll: getAll,
     getOne: getOne,
     createOne: createOne,
+    updateOne: updateOne,
     deleteOne: deleteOne,
     getOrderProducts: getOrderProducts,
     addProduct: addProduct

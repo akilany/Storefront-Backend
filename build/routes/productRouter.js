@@ -15,4 +15,5 @@ router
     .route('/:id')
     .get(productController_1["default"].getOne)
     .patch(authController_1["default"].protect, productController_1["default"].updateOne)["delete"](authController_1["default"].protect, productController_1["default"].deleteOne);
+router.get('/category/:category', productController_1["default"].getByCategory);
 exports["default"] = router;

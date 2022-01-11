@@ -17,12 +17,12 @@ describe('User endpoints responses', () => {
     expect(res.status).toBe(201)
   })
 
-  // it('gets a list of users endpoint', async () => {
-  //   const res = await req
-  //     .get('/api/users')
-  //     .set('Authorization', `Bearer ${token}`)
-  //   expect(res.status).toBe(200)
-  // })
+  it('gets a list of users endpoint', async () => {
+    const res = await req
+      .get('/api/users')
+      .set('Authorization', `Bearer ${token}`)
+    expect(res.status).toBe(200)
+  })
 
   //   it('gets one user endpoint', async () => {
   //     const res = await req.get('/api/users/1')

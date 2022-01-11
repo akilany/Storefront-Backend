@@ -7,9 +7,10 @@
     "start": "nodemon src/server.ts",
     "start:build": "npx tsc && node build/server",
     "build": "npx tsc",
-    "jasmine": "jasmine-ts",
     "test": "set ENV=test&& set PORT=3334&& db-migrate db:create storefront_test && db-migrate --env test up && jasmine-ts && db-migrate --env test reset && db-migrate db:drop storefront_test",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./build --onSuccess \"node ./build/server.js\"",
+    "create:db": "db-migrate db:create storefront",
+    "migrate:up": "db-migrate up",
     "drop:testdb": "db-migrate --env test reset && db-migrate db:drop storefront_test"
   },
   "repository": {

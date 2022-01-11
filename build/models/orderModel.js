@@ -52,7 +52,7 @@ var OrderStore = /** @class */ (function () {
                     case 0: return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'SELECT * FROM orders';
+                        sql = "SELECT orders.*, \n    array_agg(row_to_json(order_products)) AS products\n    FROM orders\n    FULL JOIN order_products ON orders.id = order_products.order_id\n    GROUP BY orders.id\n    ";
                         return [4 /*yield*/, connection.query(sql)];
                     case 2:
                         results = _a.sent();
@@ -90,6 +90,24 @@ var OrderStore = /** @class */ (function () {
                         connection = _a.sent();
                         sql = 'INSERT INTO orders (status, user_id) VALUES ($1, $2) RETURNING *';
                         return [4 /*yield*/, connection.query(sql, [order.status, order.user_id])];
+                    case 2:
+                        result = _a.sent();
+                        connection.release();
+                        return [2 /*return*/, result.rows[0]];
+                }
+            });
+        });
+    };
+    OrderStore.prototype.update = function (id, order) {
+        return __awaiter(this, void 0, void 0, function () {
+            var connection, sql, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        connection = _a.sent();
+                        sql = 'UPDATE orders SET status=$1 WHERE id=$2 RETURNING *';
+                        return [4 /*yield*/, connection.query(sql, [order.status, id])];
                     case 2:
                         result = _a.sent();
                         connection.release();

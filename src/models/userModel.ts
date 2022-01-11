@@ -6,7 +6,8 @@ const saltRounds = parseInt(JSON.stringify(SALT_ROUNDS))
 
 export type User = {
   id?: number | string
-  name: string
+  firstname: string
+  lastname: string
   email: string
   password: string
 }
@@ -31,11 +32,16 @@ export class UserStore {
   async create(user: User): Promise<User> {
     const connection = await Client.connect()
     const sql =
-      'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *'
+      'INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING *'
 
     const hash = await bcrypt.hash(user.password + PASSWORD_SECRET, saltRounds)
 
-    const result = await connection.query(sql, [user.name, user.email, hash])
+    const result = await connection.query(sql, [
+      user.firstname,
+      user.lastname,
+      user.email,
+      hash,
+    ])
 
     connection.release()
     return result.rows[0]
@@ -43,8 +49,14 @@ export class UserStore {
 
   async update(id: number | string, user: User): Promise<User> {
     const connection = await Client.connect()
-    const sql = 'UPDATE users SET name=$1, email=$2 WHERE id=$3 RETURNING *'
-    const result = await connection.query(sql, [user.name, user.email, id])
+    const sql =
+      'UPDATE users SET first_name=$1, last_name=$2, email=$3 WHERE id=$4 RETURNING *'
+    const result = await connection.query(sql, [
+      user.firstname,
+      user.lastname,
+      user.email,
+      id,
+    ])
 
     connection.release()
     return result.rows[0]

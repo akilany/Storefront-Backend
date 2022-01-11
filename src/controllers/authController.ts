@@ -87,14 +87,17 @@ const login = catchAsync(
 
 const signup = catchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const { name, email, password } = req.body
-    if (!name || !email || !password) {
+    const { firstname, lastname, email, password } = req.body
+    if (!firstname || !lastname || !email || !password) {
       return next(
-        new AppError('Please provide your name, email and password!', 400)
+        new AppError(
+          'Please provide your firstname, lastname, email and password!',
+          400
+        )
       )
     }
 
-    const user = await store.create({ name, email, password })
+    const user = await store.create({ firstname, lastname, email, password })
 
     createSendToken(user, 201, req, res)
   }

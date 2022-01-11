@@ -11,7 +11,8 @@ router.use(authController_1["default"].protect);
 router.route('/').get(orderController_1["default"].getAll).post(orderController_1["default"].createOne);
 router
     .route('/:id')
-    .get(orderController_1["default"].getOne)["delete"](orderController_1["default"].deleteOne);
+    .get(orderController_1["default"].getOne)
+    .patch(orderController_1["default"].updateOne)["delete"](orderController_1["default"].deleteOne);
 router
     .route('/:id/products')
     .get(orderController_1["default"].getOrderProducts)

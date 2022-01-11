@@ -91,11 +91,16 @@ var UserStore = /** @class */ (function () {
                     case 0: return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *';
+                        sql = 'INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING *';
                         return [4 /*yield*/, bcrypt_1["default"].hash(user.password + PASSWORD_SECRET, saltRounds)];
                     case 2:
                         hash = _a.sent();
-                        return [4 /*yield*/, connection.query(sql, [user.name, user.email, hash])];
+                        return [4 /*yield*/, connection.query(sql, [
+                                user.firstname,
+                                user.lastname,
+                                user.email,
+                                hash,
+                            ])];
                     case 3:
                         result = _a.sent();
                         connection.release();
@@ -112,8 +117,13 @@ var UserStore = /** @class */ (function () {
                     case 0: return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'UPDATE users SET name=$1, email=$2 WHERE id=$3 RETURNING *';
-                        return [4 /*yield*/, connection.query(sql, [user.name, user.email, id])];
+                        sql = 'UPDATE users SET first_name=$1, last_name=$2, email=$3 WHERE id=$4 RETURNING *';
+                        return [4 /*yield*/, connection.query(sql, [
+                                user.firstname,
+                                user.lastname,
+                                user.email,
+                                id,
+                            ])];
                     case 2:
                         result = _a.sent();
                         connection.release();

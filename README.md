@@ -6,11 +6,15 @@ npm install
 
 ### Run development server
 
+#### RUNS ON PORT 3333
+
 ```
 npm run start
 ```
 
 ### Watch ts files
+
+#### RUNS ON PORT 3333
 
 ```
 npm run watch
@@ -29,6 +33,8 @@ npm run build
 ```
 
 ### Run tests
+
+#### RUNS ON PORT 3334
 
 ```
 npm run test

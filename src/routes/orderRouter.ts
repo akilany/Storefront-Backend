@@ -5,11 +5,13 @@ import authController from '../controllers/authController'
 const router = express.Router()
 
 router.use(authController.protect)
+
 router.route('/').get(orderController.getAll).post(orderController.createOne)
 
 router
   .route('/:id')
   .get(orderController.getOne)
+  .patch(orderController.updateOne)
   .delete(orderController.deleteOne)
 
 router

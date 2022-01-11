@@ -143,6 +143,24 @@ var ProductStore = /** @class */ (function () {
             });
         });
     };
+    ProductStore.prototype.indexByCategory = function (category) {
+        return __awaiter(this, void 0, void 0, function () {
+            var connection, sql, results;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        connection = _a.sent();
+                        sql = 'SELECT * FROM products WHERE category=$1';
+                        return [4 /*yield*/, connection.query(sql, [category])];
+                    case 2:
+                        results = _a.sent();
+                        connection.release();
+                        return [2 /*return*/, results.rows];
+                }
+            });
+        });
+    };
     return ProductStore;
 }());
 exports.ProductStore = ProductStore;

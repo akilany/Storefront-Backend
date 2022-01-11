@@ -57,12 +57,14 @@ const addProduct = catchAsync(
 const getAll = handler.index(store)
 const getOne = handler.show(store)
 const createOne = handler.createOne(store)
+const updateOne = handler.updateOne(store)
 const deleteOne = handler.deleteOne(store)
 
 export default {
   getAll,
   getOne,
   createOne,
+  updateOne,
   deleteOne,
   getOrderProducts,
   addProduct,

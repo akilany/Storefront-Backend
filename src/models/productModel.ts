@@ -61,4 +61,12 @@ export class ProductStore {
     connection.release()
     return result.rows[0]
   }
+
+  async indexByCategory(category: string): Promise<Product[]> {
+    const connection = await Client.connect()
+    const sql = 'SELECT * FROM products WHERE category=$1'
+    const results = await connection.query(sql, [category])
+    connection.release()
+    return results.rows
+  }
 }

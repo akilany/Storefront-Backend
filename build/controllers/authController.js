@@ -115,15 +115,15 @@ var login = (0, catchAsync_1["default"])(function (req, res, next) { return __aw
     });
 }); });
 var signup = (0, catchAsync_1["default"])(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, name, email, password, user;
+    var _a, firstname, lastname, email, password, user;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                _a = req.body, name = _a.name, email = _a.email, password = _a.password;
-                if (!name || !email || !password) {
-                    return [2 /*return*/, next(new appError_1["default"]('Please provide your name, email and password!', 400))];
+                _a = req.body, firstname = _a.firstname, lastname = _a.lastname, email = _a.email, password = _a.password;
+                if (!firstname || !lastname || !email || !password) {
+                    return [2 /*return*/, next(new appError_1["default"]('Please provide your firstname, lastname, email and password!', 400))];
                 }
-                return [4 /*yield*/, store.create({ name: name, email: email, password: password })];
+                return [4 /*yield*/, store.create({ firstname: firstname, lastname: lastname, email: email, password: password })];
             case 1:
                 user = _b.sent();
                 createSendToken(user, 201, req, res);

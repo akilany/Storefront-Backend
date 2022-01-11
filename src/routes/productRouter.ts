@@ -15,4 +15,6 @@ router
   .patch(authController.protect, productController.updateOne)
   .delete(authController.protect, productController.deleteOne)
 
+router.get('/category/:category', productController.getByCategory)
+
 export default router

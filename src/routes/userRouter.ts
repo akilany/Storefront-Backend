@@ -6,7 +6,6 @@ const router = express.Router()
 
 router.post('/login', authController.login)
 router.post('/signup', authController.signup)
-router.patch('/:id/change-password', userController.changePassword)
 
 router.use(authController.protect)
 router.route('/').get(userController.getAll).post(userController.createOne)
@@ -16,5 +15,7 @@ router
   .get(userController.getOne)
   .patch(userController.updateOne)
   .delete(userController.deleteOne)
+
+router.patch('/:id/change-password', userController.changePassword)
 
 export default router
