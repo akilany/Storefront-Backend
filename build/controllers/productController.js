@@ -43,12 +43,14 @@ var handlerController_1 = __importDefault(require("./handlerController"));
 var catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 var appError_1 = __importDefault(require("../utils/appError"));
 var productModel_1 = require("../models/productModel");
+var dashboard_1 = __importDefault(require("../services/dashboard"));
 var store = new productModel_1.ProductStore();
+var dashboardStore = new dashboard_1["default"]();
 var getByCategory = (0, catchAsync_1["default"])(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var data;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store.indexByCategory(req.params.category)];
+            case 0: return [4 /*yield*/, dashboardStore.productsByCategory(req.params.category)];
             case 1:
                 data = _a.sent();
                 if (!data) {

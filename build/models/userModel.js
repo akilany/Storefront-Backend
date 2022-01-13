@@ -55,7 +55,7 @@ var UserStore = /** @class */ (function () {
                     case 0: return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'SELECT * FROM users';
+                        sql = 'SELECT id, first_name, last_name, email FROM users';
                         return [4 /*yield*/, connection.query(sql)];
                     case 2:
                         results = _a.sent();
@@ -91,13 +91,13 @@ var UserStore = /** @class */ (function () {
                     case 0: return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING *';
+                        sql = 'INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING id, first_name, last_name, email';
                         return [4 /*yield*/, bcrypt_1["default"].hash(user.password + PASSWORD_SECRET, saltRounds)];
                     case 2:
                         hash = _a.sent();
                         return [4 /*yield*/, connection.query(sql, [
-                                user.firstname,
-                                user.lastname,
+                                user.first_name,
+                                user.last_name,
                                 user.email,
                                 hash,
                             ])];
@@ -117,10 +117,10 @@ var UserStore = /** @class */ (function () {
                     case 0: return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'UPDATE users SET first_name=$1, last_name=$2, email=$3 WHERE id=$4 RETURNING *';
+                        sql = 'UPDATE users SET first_name=$1, last_name=$2, email=$3 WHERE id=$4 RETURNING id, first_name, last_name, email';
                         return [4 /*yield*/, connection.query(sql, [
-                                user.firstname,
-                                user.lastname,
+                                user.first_name,
+                                user.last_name,
                                 user.email,
                                 id,
                             ])];
@@ -149,7 +149,7 @@ var UserStore = /** @class */ (function () {
                         return [4 /*yield*/, bcrypt_1["default"].compare(oldPassword + PASSWORD_SECRET, user.password)];
                     case 3:
                         if (!_a.sent()) return [3 /*break*/, 6];
-                        sql = 'UPDATE users SET password=$1 WHERE id=$2 RETURNING *';
+                        sql = 'UPDATE users SET password=$1 WHERE id=$2 RETURNING id, first_name, last_name, email';
                         return [4 /*yield*/, bcrypt_1["default"].hash(newPassword + PASSWORD_SECRET, saltRounds)];
                     case 4:
                         hash = _a.sent();
@@ -179,8 +179,10 @@ var UserStore = /** @class */ (function () {
                         user = result.rows[0];
                         return [4 /*yield*/, bcrypt_1["default"].compare(password + PASSWORD_SECRET, user.password)];
                     case 3:
-                        if (_a.sent())
+                        if (_a.sent()) {
+                            user.password = undefined;
                             return [2 /*return*/, user];
+                        }
                         _a.label = 4;
                     case 4: return [2 /*return*/, null];
                 }
@@ -195,7 +197,7 @@ var UserStore = /** @class */ (function () {
                     case 0: return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'DELETE FROM users WHERE id=($1) RETURNING *';
+                        sql = 'DELETE FROM users WHERE id=($1) RETURNING id, first_name, last_name, email';
                         return [4 /*yield*/, connection.query(sql, [id])];
                     case 2:
                         result = _a.sent();

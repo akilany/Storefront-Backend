@@ -14,7 +14,9 @@
 
 ##### DELETE route: **'/api/users/:id'** **[DELETE]** **REQUIRE TOKEN**
 
-##### CHANGE CURRENT USER PASSWORD route: **'/api/users/:id/change-password'** **[PATCH]** **REQUIRE TOKEN**
+##### CHANGE USER PASSWORD route: **'/api/users/:id/change-password'** **[PATCH]** **REQUIRE TOKEN**
+
+##### GET USER ORDERS route: **'/api/users/:id/orders/:status'** **[GET]** **REQUIRE TOKEN**
 
 ##### SIGNUP route: **'/api/users/signup'** **[POST]** **NO TOKEN**
 
@@ -50,7 +52,7 @@
 
 ##### ADD PRODUCT TO ORDER route: **'/api/orders/:id/products'** **[POST]** **REQUIRE TOKEN**
 
-#### \* A valid JWT token can be obtained by either login or signup a nuew user.
+#### \* A valid JWT token can be obtained by either login or signup a new user.
 
 ## Database Schema
 

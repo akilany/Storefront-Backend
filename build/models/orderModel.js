@@ -134,42 +134,6 @@ var OrderStore = /** @class */ (function () {
             });
         });
     };
-    OrderStore.prototype.orderProducts = function (id) {
-        return __awaiter(this, void 0, void 0, function () {
-            var connection, sql, result;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, database_1["default"].connect()];
-                    case 1:
-                        connection = _a.sent();
-                        sql = 'SELECT * FROM order_products WHERE order_id=($1)';
-                        return [4 /*yield*/, connection.query(sql, [id])];
-                    case 2:
-                        result = _a.sent();
-                        connection.release();
-                        return [2 /*return*/, result.rows];
-                }
-            });
-        });
-    };
-    OrderStore.prototype.addProduct = function (orderId, quantity, productId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var connection, sql, result;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, database_1["default"].connect()];
-                    case 1:
-                        connection = _a.sent();
-                        sql = 'INSERT INTO order_products (quantity, order_id, product_id) VALUES ($1, $2, $3) RETURNING *';
-                        return [4 /*yield*/, connection.query(sql, [quantity, orderId, productId])];
-                    case 2:
-                        result = _a.sent();
-                        connection.release();
-                        return [2 /*return*/, result.rows[0]];
-                }
-            });
-        });
-    };
     return OrderStore;
 }());
 exports.OrderStore = OrderStore;

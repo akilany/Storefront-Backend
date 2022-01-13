@@ -17,7 +17,7 @@ console.log(`${ENV} environment`)
 
 const client = new Pool({
   host: POSTGRES_HOST,
-  port: 4444,
+  port: parseInt(POSTGRES_PORT as string),
   database: ENV === 'dev' ? POSTGRES_DB : POSTGRES_TEST_DB,
   user: POSTGRES_USER,
   password: POSTGRES_PASSWORD,

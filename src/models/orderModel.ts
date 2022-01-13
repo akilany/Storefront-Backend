@@ -55,21 +55,4 @@ export class OrderStore {
     connection.release()
     return result.rows[0]
   }
-
-  async orderProducts(id: number | string) {
-    const connection = await Client.connect()
-    const sql = 'SELECT * FROM order_products WHERE order_id=($1)'
-    const result = await connection.query(sql, [id])
-    connection.release()
-    return result.rows
-  }
-
-  async addProduct(orderId: string, quantity: number, productId: string) {
-    const connection = await Client.connect()
-    const sql =
-      'INSERT INTO order_products (quantity, order_id, product_id) VALUES ($1, $2, $3) RETURNING *'
-    const result = await connection.query(sql, [quantity, orderId, productId])
-    connection.release()
-    return result.rows[0]
-  }
 }

@@ -43,7 +43,9 @@ var handlerController_1 = __importDefault(require("./handlerController"));
 var catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 var appError_1 = __importDefault(require("../utils/appError"));
 var orderModel_1 = require("../models/orderModel");
+var dashboard_1 = __importDefault(require("../services/dashboard"));
 var store = new orderModel_1.OrderStore();
+var dashboardStore = new dashboard_1["default"]();
 var getOrderProducts = (0, catchAsync_1["default"])(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var order, data;
     return __generator(this, function (_a) {
@@ -54,7 +56,7 @@ var getOrderProducts = (0, catchAsync_1["default"])(function (req, res, next) { 
                 if (!order) {
                     return [2 /*return*/, next(new appError_1["default"]('No orders found with that ID', 404))];
                 }
-                return [4 /*yield*/, store.orderProducts(req.params.id)];
+                return [4 /*yield*/, dashboardStore.orderProducts(req.params.id)];
             case 2:
                 data = _a.sent();
                 res.status(200).json({
@@ -79,7 +81,7 @@ var addProduct = (0, catchAsync_1["default"])(function (req, res, next) { return
                 if (order.status !== 'active') {
                     return [2 /*return*/, next(new appError_1["default"]("Could not add product ".concat(req.body.product_id, " to order ").concat(req.params.id, " because order status is ").concat(order.status), 400))];
                 }
-                return [4 /*yield*/, store.addProduct(req.params.id, req.body.quantity, req.body.product_id)];
+                return [4 /*yield*/, dashboardStore.addProduct(req.params.id, req.body.quantity, req.body.product_id)];
             case 2:
                 data = _a.sent();
                 res.status(200).json({

@@ -43,7 +43,34 @@ var handlerController_1 = __importDefault(require("./handlerController"));
 var catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 var appError_1 = __importDefault(require("../utils/appError"));
 var userModel_1 = require("../models/userModel");
+var dashboard_1 = __importDefault(require("../services/dashboard"));
 var store = new userModel_1.UserStore();
+var dashboardStore = new dashboard_1["default"]();
+var getUserOrders = (0, catchAsync_1["default"])(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, id, status, user, data;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _a = req.params, id = _a.id, status = _a.status;
+                return [4 /*yield*/, store.show(id)];
+            case 1:
+                user = _b.sent();
+                if (!user) {
+                    return [2 /*return*/, next(new appError_1["default"]('User does not exist.', 401))];
+                }
+                return [4 /*yield*/, dashboardStore.userOrders(id, status)];
+            case 2:
+                data = _b.sent();
+                res.status(200).json({
+                    status: 'success',
+                    result: data.length,
+                    data: data,
+                    message: 'Orders Retrieved Successfully'
+                });
+                return [2 /*return*/];
+        }
+    });
+}); });
 var changePassword = (0, catchAsync_1["default"])(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var id, _a, oldPassword, newPassword, newPasswordConfirm, user;
     return __generator(this, function (_b) {
@@ -85,5 +112,6 @@ exports["default"] = {
     createOne: createOne,
     updateOne: updateOne,
     deleteOne: deleteOne,
+    getUserOrders: getUserOrders,
     changePassword: changePassword
 };

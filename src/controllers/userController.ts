@@ -2,9 +2,31 @@ import { Request, Response, NextFunction } from 'express'
 import handler from './handlerController'
 import catchAsync from '../utils/catchAsync'
 import AppError from '../utils/appError'
-import { User, UserStore } from '../models/userModel'
+import { UserStore } from '../models/userModel'
+import DashboardStore from '../services/dashboard'
 
 const store = new UserStore()
+const dashboardStore = new DashboardStore()
+
+const getUserOrders = catchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { id, status } = req.params
+    const user = await store.show(id)
+
+    if (!user) {
+      return next(new AppError('User does not exist.', 401))
+    }
+
+    const data = await dashboardStore.userOrders(id, status)
+
+    res.status(200).json({
+      status: 'success',
+      result: data.length,
+      data,
+      message: 'Orders Retrieved Successfully',
+    })
+  }
+)
 
 const changePassword = catchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -52,5 +74,6 @@ export default {
   createOne,
   updateOne,
   deleteOne,
+  getUserOrders,
   changePassword,
 }

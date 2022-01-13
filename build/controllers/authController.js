@@ -58,9 +58,6 @@ var createSendToken = function (user, statusCode, req, res) {
         expires: new Date(Date.now() + jwtCookieExpiresIn * 24 * 60 * 60 * 1000),
         httpOnly: true
     });
-    //@ts-ignore (user.pssword is of type string but it has to be undefined to not be visible in the response object)
-    // Remove password from output
-    user.password = undefined;
     res.status(statusCode).json({
         status: 'success',
         token: token,
@@ -69,31 +66,47 @@ var createSendToken = function (user, statusCode, req, res) {
         }
     });
 };
-var protect = (0, catchAsync_1["default"])(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var token, decoded, user;
+var protect = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var token, decoded, user, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
+                _a.trys.push([0, 2, , 3]);
+                token = void 0;
                 // 1) Getting token and check if it's true
                 if (req.headers.authorization &&
                     req.headers.authorization.startsWith('Bearer')) {
                     token = req.headers.authorization.split(' ')[1];
                 }
-                if (!token)
-                    return [2 /*return*/, next(new appError_1["default"]('You are not logged in! Please log in to get access.', 401))
-                        // 2) Verification token
-                    ];
+                if (!token) {
+                    return [2 /*return*/, res.status(401).json({
+                            status: 'fail',
+                            message: 'You are not logged in! Please log in to get access.'
+                        })];
+                }
                 decoded = jsonwebtoken_1["default"].verify(token, process.env.JWT_SECRET);
                 return [4 /*yield*/, store.show(decoded.id)];
             case 1:
                 user = _a.sent();
                 if (!user)
-                    return [2 /*return*/, next(new appError_1["default"]('This user does no longer exist.', 401))];
+                    return [2 /*return*/, res.status(401).json({
+                            status: 'fail',
+                            message: 'This user does no longer exist.'
+                        })];
                 next();
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                err_1 = _a.sent();
+                res.status(401).json({
+                    status: 'fail',
+                    message: 'Invalid Token.',
+                    error: err_1
+                });
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
-}); });
+}); };
 var login = (0, catchAsync_1["default"])(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, email, password, user;
     return __generator(this, function (_b) {
@@ -115,15 +128,15 @@ var login = (0, catchAsync_1["default"])(function (req, res, next) { return __aw
     });
 }); });
 var signup = (0, catchAsync_1["default"])(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, firstname, lastname, email, password, user;
+    var _a, first_name, last_name, email, password, user;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                _a = req.body, firstname = _a.firstname, lastname = _a.lastname, email = _a.email, password = _a.password;
-                if (!firstname || !lastname || !email || !password) {
-                    return [2 /*return*/, next(new appError_1["default"]('Please provide your firstname, lastname, email and password!', 400))];
+                _a = req.body, first_name = _a.first_name, last_name = _a.last_name, email = _a.email, password = _a.password;
+                if (!first_name || !last_name || !email || !password) {
+                    return [2 /*return*/, next(new appError_1["default"]('Please provide your first_name, last_name, email and password!', 400))];
                 }
-                return [4 /*yield*/, store.create({ firstname: firstname, lastname: lastname, email: email, password: password })];
+                return [4 /*yield*/, store.create({ first_name: first_name, last_name: last_name, email: email, password: password })];
             case 1:
                 user = _b.sent();
                 createSendToken(user, 201, req, res);

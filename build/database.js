@@ -10,7 +10,7 @@ var _a = process.env, POSTGRES_HOST = _a.POSTGRES_HOST, POSTGRES_PORT = _a.POSTG
 console.log("".concat(ENV, " environment"));
 var client = new pg_1.Pool({
     host: POSTGRES_HOST,
-    port: 4444,
+    port: parseInt(POSTGRES_PORT),
     database: ENV === 'dev' ? POSTGRES_DB : POSTGRES_TEST_DB,
     user: POSTGRES_USER,
     password: POSTGRES_PASSWORD

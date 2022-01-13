@@ -16,6 +16,7 @@ router
   .patch(userController.updateOne)
   .delete(userController.deleteOne)
 
+router.get('/:id/orders/:status', userController.getUserOrders)
 router.patch('/:id/change-password', userController.changePassword)
 
 export default router

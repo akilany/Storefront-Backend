@@ -15,5 +15,6 @@ router
     .route('/:id')
     .get(userController_1["default"].getOne)
     .patch(userController_1["default"].updateOne)["delete"](userController_1["default"].deleteOne);
+router.get('/:id/orders/:status', userController_1["default"].getUserOrders);
 router.patch('/:id/change-password', userController_1["default"].changePassword);
 exports["default"] = router;

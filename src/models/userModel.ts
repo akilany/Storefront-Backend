@@ -6,16 +6,16 @@ const saltRounds = parseInt(JSON.stringify(SALT_ROUNDS))
 
 export type User = {
   id?: number | string
-  firstname: string
-  lastname: string
+  first_name: string
+  last_name: string
   email: string
-  password: string
+  password?: string
 }
 
 export class UserStore {
   async index(): Promise<User[]> {
     const connection = await Client.connect()
-    const sql = 'SELECT * FROM users'
+    const sql = 'SELECT id, first_name, last_name, email FROM users'
     const results = await connection.query(sql)
     connection.release()
     return results.rows
@@ -32,13 +32,16 @@ export class UserStore {
   async create(user: User): Promise<User> {
     const connection = await Client.connect()
     const sql =
-      'INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING *'
+      'INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING id, first_name, last_name, email'
 
-    const hash = await bcrypt.hash(user.password + PASSWORD_SECRET, saltRounds)
+    const hash = await bcrypt.hash(
+      (user.password as string) + PASSWORD_SECRET,
+      saltRounds
+    )
 
     const result = await connection.query(sql, [
-      user.firstname,
-      user.lastname,
+      user.first_name,
+      user.last_name,
       user.email,
       hash,
     ])
@@ -50,10 +53,10 @@ export class UserStore {
   async update(id: number | string, user: User): Promise<User> {
     const connection = await Client.connect()
     const sql =
-      'UPDATE users SET first_name=$1, last_name=$2, email=$3 WHERE id=$4 RETURNING *'
+      'UPDATE users SET first_name=$1, last_name=$2, email=$3 WHERE id=$4 RETURNING id, first_name, last_name, email'
     const result = await connection.query(sql, [
-      user.firstname,
-      user.lastname,
+      user.first_name,
+      user.last_name,
       user.email,
       id,
     ])
@@ -71,9 +74,14 @@ export class UserStore {
     // Get User Data
     const user = await this.show(id)
     if (user) {
-      //@ts-ignore
-      if (await bcrypt.compare(oldPassword + PASSWORD_SECRET, user.password)) {
-        const sql = 'UPDATE users SET password=$1 WHERE id=$2 RETURNING *'
+      if (
+        await bcrypt.compare(
+          oldPassword + PASSWORD_SECRET,
+          user.password as string
+        )
+      ) {
+        const sql =
+          'UPDATE users SET password=$1 WHERE id=$2 RETURNING id, first_name, last_name, email'
         const hash = await bcrypt.hash(
           newPassword + PASSWORD_SECRET,
           saltRounds
@@ -97,8 +105,10 @@ export class UserStore {
     if (result.rows.length) {
       const user = result.rows[0]
 
-      if (await bcrypt.compare(password + PASSWORD_SECRET, user.password))
+      if (await bcrypt.compare(password + PASSWORD_SECRET, user.password)) {
+        user.password = undefined
         return user
+      }
     }
 
     return null
@@ -106,7 +116,8 @@ export class UserStore {
 
   async delete(id: number | string): Promise<User> {
     const connection = await Client.connect()
-    const sql = 'DELETE FROM users WHERE id=($1) RETURNING *'
+    const sql =
+      'DELETE FROM users WHERE id=($1) RETURNING id, first_name, last_name, email'
 
     const result = await connection.query(sql, [id])
 

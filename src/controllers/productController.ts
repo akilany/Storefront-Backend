@@ -3,12 +3,14 @@ import handler from './handlerController'
 import catchAsync from '../utils/catchAsync'
 import AppError from '../utils/appError'
 import { ProductStore } from '../models/productModel'
+import DashboardStore from '../services/dashboard'
 
 const store = new ProductStore()
+const dashboardStore = new DashboardStore()
 
 const getByCategory = catchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const data = await store.indexByCategory(req.params.category)
+    const data = await dashboardStore.productsByCategory(req.params.category)
 
     if (!data) {
       return next(new AppError('No category found with that name', 404))

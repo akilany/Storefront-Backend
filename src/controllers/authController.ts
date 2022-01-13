@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import catchAsync from '../utils/catchAsync'
 import AppError from '../utils/appError'
 import { User, UserStore } from '../models/userModel'
@@ -28,10 +28,6 @@ const createSendToken = (
     httpOnly: true,
   })
 
-  //@ts-ignore (user.pssword is of type string but it has to be undefined to not be visible in the response object)
-  // Remove password from output
-  user.password = undefined
-
   res.status(statusCode).json({
     status: 'success',
     token,
@@ -41,8 +37,8 @@ const createSendToken = (
   })
 }
 
-const protect = catchAsync(
-  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+const protect = async (req: Request, res: Response, next: NextFunction) => {
+  try {
     let token
     // 1) Getting token and check if it's true
     if (
@@ -52,22 +48,36 @@ const protect = catchAsync(
       token = req.headers.authorization.split(' ')[1]
     }
 
-    if (!token)
-      return next(
-        new AppError('You are not logged in! Please log in to get access.', 401)
-      )
+    if (!token) {
+      return res.status(401).json({
+        status: 'fail',
+        message: 'You are not logged in! Please log in to get access.',
+      })
+    }
 
     // 2) Verification token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string)
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET as string
+    ) as JwtPayload
 
-    //@ts-ignore
     // 3) Check if user still exists
     const user = await store.show(decoded.id)
-    if (!user) return next(new AppError('This user does no longer exist.', 401))
+    if (!user)
+      return res.status(401).json({
+        status: 'fail',
+        message: 'This user does no longer exist.',
+      })
 
     next()
+  } catch (err) {
+    res.status(401).json({
+      status: 'fail',
+      message: 'Invalid Token.',
+      error: err,
+    })
   }
-)
+}
 
 const login = catchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -87,17 +97,17 @@ const login = catchAsync(
 
 const signup = catchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const { firstname, lastname, email, password } = req.body
-    if (!firstname || !lastname || !email || !password) {
+    const { first_name, last_name, email, password } = req.body
+    if (!first_name || !last_name || !email || !password) {
       return next(
         new AppError(
-          'Please provide your firstname, lastname, email and password!',
+          'Please provide your first_name, last_name, email and password!',
           400
         )
       )
     }
 
-    const user = await store.create({ firstname, lastname, email, password })
+    const user = await store.create({ first_name, last_name, email, password })
 
     createSendToken(user, 201, req, res)
   }

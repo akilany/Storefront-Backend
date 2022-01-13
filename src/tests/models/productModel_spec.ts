@@ -6,10 +6,10 @@ describe('Product Model', () => {
   it('should have an index method', () => {
     expect(store.index).toBeDefined()
   })
-  it('should have an show method', () => {
+  it('should have a show method', () => {
     expect(store.show).toBeDefined()
   })
-  it('should have an create method', () => {
+  it('should have a create method', () => {
     expect(store.create).toBeDefined()
   })
   it('should have an update method', () => {
@@ -33,32 +33,43 @@ describe('Product Model', () => {
     expect(result).toEqual({
       id: 1,
       name: 'test product',
-      //@ts-ignore
       price: '499',
       category: 'test',
     })
   })
-
-  //   it('update method should update a user name and email', async () => {
-  //     const result = await store.create({
-  //       name: 'test user update',
-  //       email: 'test-update@ex.com',
-  //     })
-  //     expect(result).toEqual({
-  //       id: result.id,
-  //       name: 'test user update',
-  //       email: 'test-update@ex.com',
-  //       password: result.password,
-  //     })
-  //   })
 
   it('show method should return the correct product', async () => {
     const result = await store.show(1)
     expect(result).toEqual({
       id: 1,
       name: 'test product',
-      //@ts-ignore
       price: '499',
+      category: 'test',
+    })
+  })
+
+  // it('index by category method should return category products', async () => {
+  //   const result = await store.indexByCategory('test')
+  //   expect(result).toEqual([
+  //     {
+  //       id: 1,
+  //       name: 'test product',
+  //       price: '499',
+  //       category: 'test',
+  //     },
+  //   ])
+  // })
+
+  it('update method should update product name, price and category', async () => {
+    const result = await store.update(1, {
+      name: 'test product update',
+      price: '699',
+      category: 'test',
+    })
+    expect(result).toEqual({
+      id: 1,
+      name: 'test product update',
+      price: '699',
       category: 'test',
     })
   })

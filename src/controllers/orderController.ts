@@ -3,8 +3,10 @@ import handler from './handlerController'
 import catchAsync from '../utils/catchAsync'
 import AppError from '../utils/appError'
 import { OrderStore } from '../models/orderModel'
+import DashboardStore from '../services/dashboard'
 
 const store = new OrderStore()
+const dashboardStore = new DashboardStore()
 
 const getOrderProducts = catchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -14,7 +16,7 @@ const getOrderProducts = catchAsync(
       return next(new AppError('No orders found with that ID', 404))
     }
 
-    const data = await store.orderProducts(req.params.id)
+    const data = await dashboardStore.orderProducts(req.params.id)
 
     res.status(200).json({
       status: 'success',
@@ -40,7 +42,7 @@ const addProduct = catchAsync(
       )
     }
 
-    const data = await store.addProduct(
+    const data = await dashboardStore.addProduct(
       req.params.id,
       req.body.quantity,
       req.body.product_id
