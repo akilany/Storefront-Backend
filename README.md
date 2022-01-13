@@ -70,19 +70,19 @@ npm run migrate:down
 
 ## Environment Variables
 
-.._ PORT=3333
-.._ ENV=dev
+- PORT=3333
+- ENV=dev
 
-.._ POSTGRES_HOST=localhost
-.._ POSTGRES_PORT=4444
-.._ POSTGRES_DB=storefront
-.._ POSTGRES_TEST_DB=storefront_test
-.._ POSTGRES_USER=postgres
-.._ POSTGRES_PASSWORD=4444
+- POSTGRES_HOST=localhost
+- POSTGRES_PORT=4444
+- POSTGRES_DB=storefront
+- POSTGRES_TEST_DB=storefront_test
+- POSTGRES_USER=postgres
+- POSTGRES_PASSWORD=4444
 
-.._ PASSWORD_SECRET=my-little-unknown-secert
-.._ SALT_ROUNDS=10
+- PASSWORD_SECRET=my-little-unknown-secert
+- SALT_ROUNDS=10
 
-.._ JWT_SECRET='my-super-unknown-secert'
-.._ JWT_EXPIRES_IN=90d
-..\* JWT_COOKIE_EXPIRES_IN=90
+- JWT_SECRET='my-super-unknown-secert'
+- JWT_EXPIRES_IN=90d
+- JWT_COOKIE_EXPIRES_IN=90
