@@ -37,8 +37,8 @@ const createSendToken = (
   })
 }
 
-const protect = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+const protect = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
     let token
     // 1) Getting token and check if it's true
     if (
@@ -70,14 +70,8 @@ const protect = async (req: Request, res: Response, next: NextFunction) => {
       })
 
     next()
-  } catch (err) {
-    res.status(401).json({
-      status: 'fail',
-      message: 'Invalid Token.',
-      error: err,
-    })
   }
-}
+)
 
 const login = catchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {

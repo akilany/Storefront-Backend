@@ -33,18 +33,16 @@ var sendError = function (err, req, res) {
 exports["default"] = (function (err, req, res, next) {
     err.statusCode = err.statusCode || 500;
     err.status = err.status || 'error';
-    if (process.env.ENV === 'dev') {
-        var error = err;
-        if (error.code === '23505')
-            error = handleUniqueFieldsDB(error);
-        if (error.code === '23502')
-            error = handleInvalidFieldsDB(error);
-        if (error.code === '23503')
-            error = handleInvalidReferencesDB(error);
-        if (error.name === 'JsonWebTokenError')
-            error = handleJWTError();
-        if (error.name === 'TokenExpiredError')
-            error = handleJWTExpiredError();
-        sendError(error, req, res);
-    }
+    var error = err;
+    if (error.code === '23505')
+        error = handleUniqueFieldsDB(error);
+    if (error.code === '23502')
+        error = handleInvalidFieldsDB(error);
+    if (error.code === '23503')
+        error = handleInvalidReferencesDB(error);
+    if (error.name === 'JsonWebTokenError')
+        error = handleJWTError();
+    if (error.name === 'TokenExpiredError')
+        error = handleJWTExpiredError();
+    sendError(error, req, res);
 });

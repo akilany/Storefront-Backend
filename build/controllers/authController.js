@@ -66,13 +66,11 @@ var createSendToken = function (user, statusCode, req, res) {
         }
     });
 };
-var protect = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var token, decoded, user, err_1;
+var protect = (0, catchAsync_1["default"])(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var token, decoded, user;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                token = void 0;
                 // 1) Getting token and check if it's true
                 if (req.headers.authorization &&
                     req.headers.authorization.startsWith('Bearer')) {
@@ -94,19 +92,10 @@ var protect = function (req, res, next) { return __awaiter(void 0, void 0, void 
                             message: 'This user does no longer exist.'
                         })];
                 next();
-                return [3 /*break*/, 3];
-            case 2:
-                err_1 = _a.sent();
-                res.status(401).json({
-                    status: 'fail',
-                    message: 'Invalid Token.',
-                    error: err_1
-                });
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                return [2 /*return*/];
         }
     });
-}); };
+}); });
 var login = (0, catchAsync_1["default"])(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, email, password, user;
     return __generator(this, function (_b) {
